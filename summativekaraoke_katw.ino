@@ -7,14 +7,7 @@ Description: karaoke
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 #include "pitches.h"
-
-int labubuSong[] = {};
-//2 = half note, 4 = quarter note, 8 = eigth note... etc
-int labubuNoteDurations[] = {};
-String labubuSongLyrics = "";
-
-int otherSong[] = {};
-int otherNoteDurations[] = {};
+#include "songConstants.h"
 
 LiquidCrystal_I2C lcd(0x27,16,2);
 
