@@ -18,6 +18,7 @@ void setup() {
   // lcd.setCursor(0,0);
   // lcd.print("hi"); //lcd debug
   Serial.begin(9600);
+  delay(1000);
   Serial.println("Pick a Song - type 1 for Labubu Song and 2 for Bags (Clairo):");
 }
 
@@ -39,12 +40,14 @@ void loop() {
     if (userInputInt == 1) //play the labubu song when user inputs 1
     {
       playSong(labubuSongNotes, labubuSongNoteDurations, labubuSongLyrics, totalLabubuSongNotes);
+      Serial.println("Pick a Song - type 1 for Labubu Song and 2 for Bags (Clairo):");
       return;
     }
 
     if (userInputInt == 2) //play Bags when user inputs 2
     {
       playSong(bagsNotes, bagsNoteDurations, bagsLyrics, totalBagsNotes);
+      Serial.println("Pick a Song - type 1 for Labubu Song and 2 for Bags (Clairo):");
       return;
     }
   }
@@ -58,12 +61,17 @@ void playSong(int song[], int durations[], String lyrics[], int totalNotes) {
   int currentNote = 0;
 
   //play the notes of the songs
-  while (currentNote < totalNotes) {
+  while (currentNote < totalNotes) 
+  {
     currentTime = millis(); //update time
     if (!isPlayingNote) 
     {
-      noteDuration = 1000/durations[currentNote];
+      noteDuration = 2000/durations[currentNote];
+
+    if(song[currentNote] != 0) {
       tone(BUZZER_PIN, song[currentNote], noteDuration);
+    } //check if currentNote is a rest and only play a tone() if it isn't a rest 
+
       noteStartTime = currentTime; //record time the note started playing
       isPlayingNote = true;
     } //if a note isn't currently playing, continues
@@ -76,6 +84,11 @@ void playSong(int song[], int durations[], String lyrics[], int totalNotes) {
           isPlayingNote = false;
         }
       }
-
   }
+  //loop that prints the lyrics onto the LCD
+  // for (int currentLyrics = 0; currentLyrics < totalLyrics; currentLyrics++) {
+  //   lcd.clear();
+  //   lcd.setCursor(0,0);
+  //   lcd.print(lyrics[currentLyrics]);
+  // } note: make 2d array with lyrics later.. this is kinda pseudocode rn
 }

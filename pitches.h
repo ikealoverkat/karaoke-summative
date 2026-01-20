@@ -2,6 +2,7 @@
  * Public Constants
  *************************************************/
 
+#define NOTE_REST 0
 #define NOTE_B0  31
 #define NOTE_C1  33
 #define NOTE_CS1 35
@@ -36,11 +37,14 @@
 #define NOTE_FS3 185
 #define NOTE_G3  196
 #define NOTE_GS3 208
+#define NOTE_AF3 208
 #define NOTE_A3  220
 #define NOTE_AS3 233
+#define NOTE_BF3 233
 #define NOTE_B3  247
 #define NOTE_C4  262
 #define NOTE_CS4 277
+#define NOTE_DF4 277
 #define NOTE_D4  294
 #define NOTE_DS4 311
 #define NOTE_E4  330
