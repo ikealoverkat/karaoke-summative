@@ -59,6 +59,7 @@ void playSong(int song[], int durations[], String lyrics[], int totalNotes) {
 
   //play the notes of the songs
   while (currentNote < totalNotes) {
+    currentTime = millis(); //update time
     if (!isPlayingNote) 
     {
       noteDuration = 1000/durations[currentNote];
@@ -77,26 +78,4 @@ void playSong(int song[], int durations[], String lyrics[], int totalNotes) {
       }
 
   }
-
-//this code does not work
-  // while (thisNote < totalNotes) //while the song isn't over, play the song
-  //   {
-  //     if (!isPlayingNote) //if a note isn't currently playing, continue
-  //     {
-  //       noteDuration = 1000/durations[thisNote];
-  //       tone(BUZZER_PIN, song[thisNote], noteDuration); //play the note on the buzzer pin
-
-  //       noteStartTime = currentTime; //record time the note started playing
-  //       isPlayingNote = true;
-  //     }
-  //     else
-  //     {
-  //       unsigned long pauseBetweenNotes = noteDuration * 1.30; //declare pause time between notes - 30% of the note duration
-  //       if (currentTime - noteStartTime >= pauseBetweenNotes) //if the pause is finished, continue
-  //       {
-  //         thisNote++;
-  //         isPlayingNote = false;
-  //       }
-  //     }
-  //   }
 }
