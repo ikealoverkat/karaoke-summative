@@ -1,23 +1,33 @@
-#include <analogWave.h> //r4 has a built in DAC on pin A0! I am free from tone()!!!
-analogWave instrumentalPlayer(DAC);
 /* 
+Title: TEJ3M Karaoke Machine Summative
 Author: Kat Wang
-Date: 1/20/26
-Description: karaoke
+Date: 1/22/26
+Description: 
+  Karaoke machine made using an Arduino UNO R4, some LED lights, a 1602 I2C LCD, and a buzzer. 
+  It plays the melody notes using the buzzer, and displays the lyrics on the LCD, while the LEDs flash every time the
+  note that is being played changes.
 */
 
 #include <Wire.h>
-#include <LiquidCrystal.h>
+#include <LiquidCrystal_I2C.h>
 #include "pitches.h"
 #include "constants.h"
 
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal_I2C lcd(0x27, lcdWidth, lcdHeight); // set the LCD I2C address
 
 void setup() {
-  lcd.begin(16,2);
+  lcd.init();
+  lcd.backlight();
   lcd.clear();
-  lcd.setCursor(0,0);
-  lcdInputMessage(); 
+  lcd.setCursor(0,0); //initialize the lcd
+  lcdInputMessage();  //call method that displays input text on the lcd
+
+  pinMode(3, OUTPUT);
+  pinMode(4, OUTPUT);
+  pinMode(5, OUTPUT);    
+  pinMode(6, OUTPUT);
+  pinMode(7, OUTPUT);    
+  
   Serial.begin(9600);
 }
 
@@ -25,7 +35,7 @@ void lcdErrorMessage() {
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("invalid input");
-  delay(200); //remove later
+  delay(200);
 }
 
 void lcdInputMessage() {
@@ -42,7 +52,6 @@ void loop() {
     String userInput = Serial.readStringUntil('\n');
     userInput.trim();    
     int userInputInt = userInput.toInt();
-    Serial.println(userInputInt); //prints userInput for debugging
     
     if (userInputInt != 1 && userInputInt != 2)
     {
@@ -62,7 +71,7 @@ void loop() {
     } 
     else if (userInputInt == 2) //play Bags when user inputs 2
     {
-      playSong(bagsNotes, bagsNoteDurations, bagsLyrics, totalBagsLyrics, totalBagsNotes, 1700, 7);
+      playSong(bagsNotes, bagsNoteDurations, bagsLyrics, totalBagsLyrics, totalBagsNotes, 1700, 6);
       lcdInputMessage();
       return;
     }
@@ -79,24 +88,26 @@ void playSong(int song[], int durations[], String lyrics[], int totalLyrics, int
   int currentLyrics = 0;
   unsigned long lyricsDisplayDuration = 0;
 
+  int ledPinNumber = 3;
+
   //play the melody of the song
   while (melodyCurrentNote < melodyTotalNotes) 
   {
     melodyCurrentTime = millis(); //update time
-    if (melodyCurrentNote < melodyTotalNotes) {
+    if (melodyCurrentNote < melodyTotalNotes) { //if a note isn't currently playing, continues
       if (!melodyIsPlayingNote) 
       {
         melodyNoteDuration = melodySpeed/durations[melodyCurrentNote];
-        lyricsDisplayDuration = melodyNoteDuration * 4; //display each lyric for 4 notes
 
         if(song[melodyCurrentNote] != NOTE_REST) 
         {
           tone(BUZZER_PIN, song[melodyCurrentNote], melodyNoteDuration);
+          digitalWrite(ledPinNumber, HIGH);
         } //check if melodyCurrentNote is a rest and only play a tone() if it isn't a rest         
         melodyNoteStartTime = melodyCurrentTime; //record time the note started playing
         melodyIsPlayingNote = true;
 
-        if (melodyCurrentNote % lyricsSpeed == 0 && currentLyrics < totalLyrics - 1) //if the remainder of melodyNote/4 = 0
+        if (melodyCurrentNote % lyricsSpeed == 0 && currentLyrics < totalLyrics - 1) //if the remainder of melodyNote divided by notes per lyric = 0 and the lyrics aren't done playing, continue
         {
           lcd.clear();
           lcd.setCursor(0,0);
@@ -105,34 +116,21 @@ void playSong(int song[], int durations[], String lyrics[], int totalLyrics, int
           lcd.print(lyrics[currentLyrics + 1]);
           currentLyrics++;          
         } 
-      } //if a note isn't currently playing, continues
+      }
       else
         {
           unsigned long pauseBetweenNotes = melodyNoteDuration * 1.30; //declare pause time between notes - 30% of the note duration
           if (melodyCurrentTime - melodyNoteStartTime >= pauseBetweenNotes) //if the pause is finished, continue
           {
+            digitalWrite(ledPinNumber, LOW);
             melodyCurrentNote++;
             melodyIsPlayingNote = false;
+            ledPinNumber++;
+            if (ledPinNumber > 7) {
+              ledPinNumber = 3;
+            }            
           }
         }
-
-      // loop that prints the lyrics onto the LCD
-      // for (int currentLyrics = 0; currentLyrics < totalLyrics; currentLyrics++) {
-      //   lcd.clear();
-      //   lcd.setCursor(0,0);
-      //   unsigned long lyricsDisplayStartTime = millis();
-      //   while (millis() - lyricsDisplayStartTime < lyricsDisplayDuration) {
-      //       lcd.print(lyrics[currentLyrics]);
-      //       lcd.setCursor(0,1);
-      //       lcd.print(lyrics[currentLyrics + 1]);
-      //   }
-      // }  
     }
-
   }
-
-  //control the LEDs in a loop (it's like a metronome so every beat that music plays a different LED lights up and they go in a line)
-  // for (int i = 0; i < melodyTotalNotes; i++) {
-  //   digitalWrite(LED_PIN, HIGH);
-  // }
 }
