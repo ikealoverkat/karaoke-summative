@@ -16,7 +16,7 @@ int bagsNotes[] = {
     NOTE_REST, NOTE_REST, NOTE_REST, NOTE_REST, NOTE_REST, //rests
     NOTE_E4, NOTE_FS4, NOTE_E4, NOTE_D4, NOTE_B3, NOTE_A3, NOTE_REST, //every minute counts
     NOTE_REST, NOTE_E4, NOTE_FS4, NOTE_E4, NOTE_D4, NOTE_A3, NOTE_B3, NOTE_D4, NOTE_E4, NOTE_FS4, NOTE_E4, //I don't wanna watch TV anymore
-    NOTE_REST, NOTE_REST, NOTE_REST, //rests
+    NOTE_REST, //rests
     NOTE_E4, NOTE_FS4, NOTE_E4, NOTE_D4, NOTE_B3, NOTE_A3, NOTE_REST, // can you figure me out?
     NOTE_E4, NOTE_FS4, NOTE_E4, NOTE_D4, NOTE_A3, NOTE_B3, NOTE_D4, NOTE_D4, NOTE_FS4, NOTE_E4, NOTE_D4, //just doing it to waste more time on the couch
     NOTE_REST, NOTE_REST, // rests
@@ -46,7 +46,7 @@ int bagsNoteDurations[] = {
     4, 2, 1, 1, 2, //rests
     8, 8, 8, 8, 8, 8, 8, //every minute counts
     4, 8, 8, 8, 8, 4, 8, 4, 8, 8, 4, //I don't wanna watch TV anymore
-    4, 2, 2, //rests
+    2, //rests
     8, 8, 8, 8, 8, 8, 8, // can you figure me out?
     8, 8, 8, 8, 4, 4, 8, 8, 8, 4, 8, //just doing it to waste more time on the couch 
     4, 4, // rests
@@ -69,89 +69,34 @@ int totalBagsNotes = sizeof(bagsNotes) / sizeof(bagsNotes[0]); //get total amoun
 
 String bagsLyrics[] = {"", ""};
 
-/* Bags Instrumental */
-int bagsInstrumentalNotes[] = {
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4, 
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4, 
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
-    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
-    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
-    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
-    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
-    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
-    NOTE_CS5
-};
-
-int bagsInstrumentalDurations[] = {
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    4, 4, 4, 4,
-    8, 8, 8, 8, 4, 8, 4, 8, 4, 4,
-    8, 8, 8, 8, 4, 8, 4, 8, 4, 4,
-    8, 8, 8, 8, 8, 8, 4, 8, 4, 4,
-    1,
-};
-
-int totalBagsInstrumentalNotes = sizeof(bagsInstrumentalNotes) / sizeof(bagsInstrumentalNotes[0]); 
-
-
 /*---- Labubu Song ----*/
 int labubuSongNotes[] = {
+    NOTE_E4, NOTE_E4, NOTE_E4, //la bu bu
+    NOTE_REST,
+    NOTE_F4, NOTE_F4, NOTE_F4, //la bu bu
+    NOTE_REST,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, //la bu bu
+    NOTE_REST,
+    NOTE_G4, NOTE_G4, NOTE_A4, NOTE_A4, NOTE_G4, //labu laa buu
+    NOTE_REST,
+    NOTE_G4, NOTE_A4, NOTE_A4, NOTE_G4 //la bu bu
+    
 
 };
 //2 = half note, 4 = quarter note, 8 = eigth note... etc
 int labubuSongNoteDurations[] = {
-
+    4, 4, 4,
+    2,
+    4, 4, 4,
+    2,
+    4, 4, 4,
+    2,
+    8, 8, 4, 8, 8,
+    4,
+    4, 4, 8, 4
 };
 
 String labubuSongLyrics[] = {"", ""};
 
-int totalLabubuSongNotes = 51;
+int totalLabubuSongNotes = sizeof(labubuSongNotes) / sizeof(labubuSongNotes[0]);
 
