@@ -1,6 +1,6 @@
 #include <Arduino.h> //need this so I can use the String type
 
-const int BUZZER_PIN = 8; //buzzer connects to pin 8
+const int BUZZER_PIN = 8; //buzzer connects to pin 8 (plays the melody)
 const int lcdWidth = 16; //how many characters wide the lcd is
 const int lcdHeight = 2; //how many lines the lcd has
 
@@ -24,15 +24,16 @@ int bagsNotes[] = {
     NOTE_D4, NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_E4, NOTE_E4, NOTE_E4, NOTE_D4, NOTE_D4, NOTE_B3, NOTE_REST, // I can't read you but if you want the pleasure's all mine 
     NOTE_D4, NOTE_D4, NOTE_A4, NOTE_A4, NOTE_FS4, NOTE_E4, NOTE_FS4, NOTE_FS4, NOTE_E4, NOTE_FS4, NOTE_E4, NOTE_E4, NOTE_REST, NOTE_REST, // Can you see me losing everything to hold back? 
     NOTE_D4, NOTE_E4, NOTE_A4, NOTE_E4, NOTE_E4, NOTE_E4, // I guess this could be worse
-    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3 // Walking out the door with your bags
+    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, // Walking out the door with your bags
     NOTE_REST, // rests
-    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3 // Walking out the door with your bags
+    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, // Walking out the door with your bags
     NOTE_REST, // rests
-    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3 // Walking out the door with your bags
+    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, // Walking out the door with your bags
     NOTE_REST, // rests
-    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3 // Walking out the door with your bags
-    NOTE_REST, NOTE_REST, // rests
+    NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, NOTE_CS4, NOTE_B3, // Walking out the door with your bags
+    NOTE_REST, NOTE_REST // rests
 };
+
 //2 = half note, 4 = quarter note, 8 = eigth note... etc
 int bagsNoteDurations[] = {
     8, 8, 8, 8, 8, 8, //Every second counts
@@ -53,7 +54,7 @@ int bagsNoteDurations[] = {
     8, 8, 8, 8, 8, 4, 8, 8, 8, 8, 8, 4, 8, // I can't read you but if you want the pleasure's all mine 
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 4, 4, 8, 16, // Can you see me losing everything to hold back? 
     16, 8, 8, 8, 8, 4, // I guess this could be worse
-    8, 8, 8, 8, 8, 8, 8, 8, // Walking out the door with your bags
+    8, 8, 8, 8, 8, 8, 8, 8, 8, // Walking out the door with your bags
     1, // rests
     8, 8, 8, 8, 8, 8, 8, 8, // Walking out the door with your bags
     1, //rests
@@ -64,9 +65,82 @@ int bagsNoteDurations[] = {
     8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8
 };
 
-int totalBagsNotes = sizeof(bagsNotes) / sizeof(bagsNotes[0]); //get total amount of notes
+int totalBagsNotes = sizeof(bagsNotes) / sizeof(bagsNotes[0]); //get total amount of notes from the size of the array note: research this later
 
 String bagsLyrics[] = {"", ""};
+
+/* Bags Instrumental */
+int bagsInstrumentalNotes[] = {
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4, 
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4, 
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_D4, NOTE_D4, NOTE_D4, NOTE_D4,
+    NOTE_FS4, NOTE_FS4, NOTE_FS4, NOTE_FS4,
+    NOTE_E4, NOTE_E4, NOTE_E4, NOTE_E4,
+    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
+    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
+    NOTE_AS6, NOTE_GS6, NOTE_F6, NOTE_FS6, NOTE_F6, NOTE_AS5, NOTE_F5, NOTE_GS5, NOTE_AS5, NOTE_F6,
+    NOTE_CS5
+};
+
+int bagsInstrumentalDurations[] = {
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    4, 4, 4, 4,
+    8, 8, 8, 8, 4, 8, 4, 8, 4, 4,
+    8, 8, 8, 8, 4, 8, 4, 8, 4, 4,
+    8, 8, 8, 8, 8, 8, 4, 8, 4, 4,
+    1,
+};
+
+int totalBagsInstrumentalNotes = sizeof(bagsInstrumentalNotes) / sizeof(bagsInstrumentalNotes[0]); 
+
 
 /*---- Labubu Song ----*/
 int labubuSongNotes[] = {
