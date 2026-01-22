@@ -67,7 +67,18 @@ int bagsNoteDurations[] = {
 
 int totalBagsNotes = sizeof(bagsNotes) / sizeof(bagsNotes[0]); //get total amount of notes from the size of the array note: research this later
 
-String bagsLyrics[] = {"", ""};
+String bagsLyrics[] = {"Every second cou", "nts, I don't wan", "na talk to you a", "nymore.", 
+                    "All these little", "games, you can c", "all me by the na", "me I gave you", "yesterday",
+                    "Every minute cou", "nts, I don't wan", "na watch TV anym", "ore.",
+                    "Can you figure m", "e out? Just doin", "g it to waste mo", "re time on the c", "ouch.",
+                    "Can you see me?", "I'm waiting for", "the right time, ", "I can't read you", "but if you want",
+                    "the pleasure's a", "ll mine. Can you", "see me losing ev", "erything to hold", "back?",
+                    "I guess this cou", "ld be worse", "Walking out the", " door with your", "bags,",
+                    "Walking out the", " door with your", "bags,",
+                    "Walking out the", " door with your", "bags.",
+                };
+
+int totalBagsLyrics = sizeof(bagsLyrics) / sizeof(bagsLyrics[0]);
 
 /*---- Labubu Song ----*/
 int labubuSongNotes[] = {
@@ -96,7 +107,9 @@ int labubuSongNoteDurations[] = {
     4, 4, 8, 4
 };
 
-String labubuSongLyrics[] = {"", ""};
+String labubuSongLyrics[] = {"la bu bu,", "la bu bu,", "labu laa bu,", "la bu bu!"};
 
 int totalLabubuSongNotes = sizeof(labubuSongNotes) / sizeof(labubuSongNotes[0]);
+
+int totalLabubuLyrics = sizeof(labubuSongLyrics) / sizeof(labubuSongLyrics[0]);
 

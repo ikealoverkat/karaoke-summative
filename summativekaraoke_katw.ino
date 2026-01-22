@@ -56,26 +56,28 @@ void loop() {
 
     if (userInputInt == 1) //play the labubu song when user inputs 1
     {
-      playSong(labubuSongNotes, labubuSongNoteDurations, labubuSongLyrics, totalLabubuSongNotes, 1200);
+      playSong(labubuSongNotes, labubuSongNoteDurations, labubuSongLyrics, totalLabubuLyrics, totalLabubuSongNotes, 1200, 4);
       lcdInputMessage();
       return;
     } 
     else if (userInputInt == 2) //play Bags when user inputs 2
     {
-      // playSongOld(bagsInstrumentalNotes, bagsInstrumentalDurations, bagsInstrumentalTotalNotes);
-      playSong(bagsNotes, bagsNoteDurations, bagsLyrics, totalBagsNotes, 1700);
+      playSong(bagsNotes, bagsNoteDurations, bagsLyrics, totalBagsLyrics, totalBagsNotes, 1700, 7);
       lcdInputMessage();
       return;
     }
   }
 }
 
-void playSong(int song[], int durations[], String lyrics[], int melodyTotalNotes, int melodySpeed) { //the higher the speed, the slower the song plays
+void playSong(int song[], int durations[], String lyrics[], int totalLyrics, int melodyTotalNotes, int melodySpeed, int lyricsSpeed) { //the higher the speed, the slower the song plays
   unsigned long melodyCurrentTime = millis();
   bool melodyIsPlayingNote = false;
   int melodyNoteDuration = 0;
   unsigned long melodyNoteStartTime = 0;
   int melodyCurrentNote = 0;
+
+  int currentLyrics = 0;
+  unsigned long lyricsDisplayDuration = 0;
 
   //play the melody of the song
   while (melodyCurrentNote < melodyTotalNotes) 
@@ -85,6 +87,7 @@ void playSong(int song[], int durations[], String lyrics[], int melodyTotalNotes
       if (!melodyIsPlayingNote) 
       {
         melodyNoteDuration = melodySpeed/durations[melodyCurrentNote];
+        lyricsDisplayDuration = melodyNoteDuration * 4; //display each lyric for 4 notes
 
         if(song[melodyCurrentNote] != NOTE_REST) 
         {
@@ -92,6 +95,16 @@ void playSong(int song[], int durations[], String lyrics[], int melodyTotalNotes
         } //check if melodyCurrentNote is a rest and only play a tone() if it isn't a rest         
         melodyNoteStartTime = melodyCurrentTime; //record time the note started playing
         melodyIsPlayingNote = true;
+
+        if (melodyCurrentNote % lyricsSpeed == 0 && currentLyrics < totalLyrics - 1) //if the remainder of melodyNote/4 = 0
+        {
+          lcd.clear();
+          lcd.setCursor(0,0);
+          lcd.print(lyrics[currentLyrics]);
+          lcd.setCursor(0,1);
+          lcd.print(lyrics[currentLyrics + 1]);
+          currentLyrics++;          
+        } 
       } //if a note isn't currently playing, continues
       else
         {
@@ -101,8 +114,19 @@ void playSong(int song[], int durations[], String lyrics[], int melodyTotalNotes
             melodyCurrentNote++;
             melodyIsPlayingNote = false;
           }
-
         }
+
+      // loop that prints the lyrics onto the LCD
+      // for (int currentLyrics = 0; currentLyrics < totalLyrics; currentLyrics++) {
+      //   lcd.clear();
+      //   lcd.setCursor(0,0);
+      //   unsigned long lyricsDisplayStartTime = millis();
+      //   while (millis() - lyricsDisplayStartTime < lyricsDisplayDuration) {
+      //       lcd.print(lyrics[currentLyrics]);
+      //       lcd.setCursor(0,1);
+      //       lcd.print(lyrics[currentLyrics + 1]);
+      //   }
+      // }  
     }
 
   }
@@ -111,11 +135,4 @@ void playSong(int song[], int durations[], String lyrics[], int melodyTotalNotes
   // for (int i = 0; i < melodyTotalNotes; i++) {
   //   digitalWrite(LED_PIN, HIGH);
   // }
-
-  //loop that prints the lyrics onto the LCD
-  // for (int currentLyrics = 0; currentLyrics < totalLyrics; currentLyrics++) {
-  //   lcd.clear();
-  //   lcd.setCursor(0,0);
-  //   lcd.print(lyrics[currentLyrics]);
-  // } note: make 2d array with lyrics later.. this is kinda pseudocode rn
 }
